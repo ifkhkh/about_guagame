@@ -261,15 +261,159 @@ const testObjectDeepEquals2 = () => {
 }
 
 
-const test = () => {
+const test2 = () => {
     testObjectEquals()
     testObjectDeepEquals()
     testObjectDeepEquals2()
 }
 
+// 递归联系3
+
+// 判断类型套路实现
+const isTypeOf = (o) => {
+    let key = Object.prototype.toString.call(o)
+    return key.split(' ')[1].split(']')[0]
+}
+
+const JSType = {
+    // 用来跟 isTypeOf 的结果比对
+    function: 'Function',
+    array: 'Array',
+    string: 'String',
+    regexp: 'Regexp',
+    number: 'Number',
+    object: 'Object',
+    element: {
+        input: 'HTMLInputElement',
+        ul: 'HTMLUListElement',
+        li: 'HTMLLIElement',
+        div: 'HTMLDivElement',
+        table: 'HTMLTableSectionElement',
+        button: 'HTMLButtonElement',
+    },
+}
+
+const equals = (a, b) => {
+    if (isTypeOf(a) !== isTypeOf(b)) {
+        return false
+    }
+    if (isTypeOf(a) === JSType.object) {
+        return objectDeepEquals(a, b)
+    }
+    if (isTypeOf(a) === JSType.array) {
+        return arrayDeepEquals(a, b)
+    }
+    return a === b
+}
+
+const testEquals = () => {
+    let a1 = 100
+    let b1 = 100
+    let a2 = 'gua'
+    let b2 = 'gua'
+    let a3 = {}
+    let b3 = {}
+    let a4 = []
+    let b4 = []
+    let a5 = {
+        x: [1],
+    }
+    let b5 = {
+        x: [1],
+    }
+    let a6 = [
+        {
+            x: 1,
+        }
+    ]
+    let b6 = [
+        {
+            x: 1,
+        }
+    ]
+    let a7 = {
+        x: [1],
+        y: {
+            z: [1],
+        }
+    }
+    let b7 = {
+        x: [1],
+        y: {
+            z: [1],
+        }
+    }
+    let a8 = {
+        x: [1],
+        y: {
+            z: [1, {
+                x1: 10,
+            }],
+        }
+    }
+    let b8 = {
+        x: [1],
+        y: {
+            z: [1, {
+                x1: 10,
+            }],
+        }
+    }
+
+    let a9 = {
+        x: [1],
+        y: {
+            z: [[[2]]],
+        },
+    }
+    let b9 = {
+        x: [1],
+        y: {
+            z: [[[3]]],
+        },
+    }
+
+    let a10 = {
+        x: [1],
+        y: {
+            z: [[[3]]],
+            zz: {
+                a: [[[2]]],
+            }
+        },
+    }
+
+    let b10 = {
+        x: [1],
+        y: {
+            z: [[[3]]],
+            zz: {
+                a: [[[2]]],
+            }
+        },
+    }
+
+    ensure(equals(a1, b1), 'test equals 1')
+    ensure(equals(a2, b2), 'test equals 2')
+    ensure(equals(a3, b3), 'test equals 3')
+    ensure(equals(a4, b4), 'test equals 4')
+    ensure(equals(a5, b5), 'test equals 5')
+    ensure(equals(a6, b6), 'test equals 6')
+    ensure(equals(a7, b7), 'test equals 7')
+    ensure(equals(a8, b8), 'test equals 8')
+    ensure(!equals(a9, b9), 'test equals 9')
+    ensure(equals(a10, b10), 'test equals 10')
+}
+
+
+const test3 = () => {
+    testEquals()
+}
+
 const __main = () => {
     // test1()
-    test()
+    // test2()
+    test3()
 }
 
 
